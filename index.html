@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operazione Banana - Colazione Segreta</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-image: url("https://i.postimg.cc/4NQccZhB/banana.jpg");
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .card {
+            background: #ffffff;
+            padding: 35px 25px;
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            max-width: 450px;
+            width: 100%;
+            border: 2px solid #fbc02d;
+        }
+
+        .banana-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            color: #333333;
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+            line-height: 1.5;
+            letter-spacing: 0.5px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 14px;
+            font-size: 1rem;
+            border: 2px solid #cccccc;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            text-align: center;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #fbc02d;
+        }
+
+        .error-msg {
+            color: #d32f2f;
+            font-size: 0.9rem;
+            font-weight: 600;
+            min-height: 22px; /* Mantiene lo spazio per non far "saltare" il bottone */
+            margin-bottom: 10px;
+            visibility: hidden;
+        }
+
+        button {
+            background-image: url("img/banana.jpg");
+            color: #212121;
+            font-weight: bold;
+            font-size: 1rem;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        button:hover {
+            background-color: #f9a825;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        #receipt-section {
+            display: none;
+        }
+
+        #receipt-section h2 {
+            color: #2e7d32;
+        }
+
+        #receipt-img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-top: 15px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <!-- Sezione Login -->
+        <div id="login-section">
+            <div class="banana-icon">🍌</div>
+            <h2>INSERISCI QUI LA PASSWORD PER VISUALIZZARE LA TUA COLAZIONE</h2>
+            
+            <input type="text" id="password-input" placeholder="Scrivi qui la parola d'ordine..." autocomplete="off">
+            
+            <div id="error-message" class="error-msg">Password errata! Riprova.</div>
+            
+            <button id="submit-btn" onclick="verificaPassword()">ACCEDI</button>
+        </div>
+
+        <!-- Sezione Scontrino (nascosta all'inizio) -->
+        <div id="receipt-section">
+            <div class="banana-icon">🥐☕</div>
+            <h2>COLAZIONE SBLOCCATA! BUON APPETITO!</h2>
+            <img id="receipt-img" src="" alt="Scontrino della colazione">
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // CONFIGURAZIONE (Modifica questi due valori)
+        // ==========================================
+        const PASSWORD_CORRETTA = "bananasegreta"; // Scrivi tutto in minuscolo
+        const PERCORSO_IMMAGINE = "scontrino.jpg"; // Nome del file immagine o link URL
+        // ==========================================
+
+        const inputField = document.getElementById('password-input');
+        const errorMsg = document.getElementById('error-message');
+        const loginSection = document.getElementById('login-section');
+        const receiptSection = document.getElementById('receipt-section');
+        const receiptImg = document.getElementById('receipt-img');
+
+        function verificaPassword() {
+            // Prende il valore, toglie spazi vuoti extra e converte in minuscolo
+            const passwordInserita = inputField.value.trim().toLowerCase();
+
+            if (passwordInserita === PASSWORD_CORRETTA.toLowerCase()) {
+                // Password corretta: nasconde il form e mostra l'immagine
+                loginSection.style.display = 'none';
+                receiptImg.src = PERCORSO_IMMAGINE;
+                receiptSection.style.display = 'block';
+            } else {
+                // Password errata: mostra il messaggio rosso e svuota l'input
+                errorMsg.style.visibility = 'visible';
+                inputField.value = '';
+                inputField.focus(); // Rimette il cursore dentro la casella di testo
+            }
+        }
+
+        // Permette di premere "Invio" sulla tastiera o sullo smartphone
+        inputField.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                verificaPassword();
+            }
+        });
+    </script>
+
+</body>
+</html>
